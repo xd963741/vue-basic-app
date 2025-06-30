@@ -6,5 +6,5 @@ Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://
 
 # 筆記
 
-cd C:\Users\Joe\Desktop\vueprj\vue-basic-app
+cd vue-basic-app
 
