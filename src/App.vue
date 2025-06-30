@@ -1,116 +1,81 @@
 <template>
-  <div class="login-container">
-    <h2>登入系統</h2>
+  <div class="container">
+    <h1>📢 LINE 訊息模擬器</h1>
+    
+    <label for="msg">輸入訊息內容：</label>
+    <textarea v-model="message" id="msg" rows="5" placeholder="請輸入要發送的訊息"></textarea>
 
-    <form @submit.prevent="onLogin" class="login-form">
-      <label for="username">帳號：</label>
-      <input
-        id="username"
-        v-model="username"
-        type="text"
-        placeholder="請輸入帳號"
-        autocomplete="username"
-      />
+    <button @click="sendMessage" :disabled="!message.trim()">送出訊息</button>
 
-      <label for="password">密碼：</label>
-      <input
-        id="password"
-        v-model="password"
-        type="password"
-        placeholder="請輸入密碼"
-        autocomplete="current-password"
-      />
-
-      <button type="submit" :disabled="loading">
-        {{ loading ? '登入中...' : '登入' }}
-      </button>
-    </form>
-
-    <p v-if="message" class="message">{{ message }}</p>
+    <p v-if="showConfirm" class="confirm">✅ 訊息已模擬送出！</p>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 
-const username = ref('')
-const password = ref('')
-const loading = ref(false)
 const message = ref('')
+const showConfirm = ref(false)
 
-function onLogin() {
-  if (!username.value.trim() || !password.value.trim()) {
-    alert('請輸入帳號與密碼')
-    return
-  }
-
-  loading.value = true
-  message.value = ''
-
-  // 模擬網路延遲登入流程 (2秒)
+function sendMessage() {
+  if (!message.value.trim()) return
+  alert(`訊息內容：\n${message.value}`)
+  showConfirm.value = true
   setTimeout(() => {
-    loading.value = false
-    message.value = `登入成功，歡迎 ${username.value}！`
+    showConfirm.value = false
+    message.value = ''
   }, 2000)
 }
 </script>
 
 <style scoped>
-.login-container {
-  max-width: 360px;
-  margin: 5rem auto;
+.container {
+  max-width: 500px;
+  margin: 4rem auto;
   padding: 2rem;
   border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  font-family: 'Segoe UI', sans-serif;
   background-color: #fff;
+}
+
+h1 {
   text-align: center;
+  margin-bottom: 1.5rem;
+  color: #06c755; /* LINE Green */
 }
 
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-input {
-  padding: 0.5rem 0.75rem;
+textarea {
+  width: 100%;
+  padding: 1rem;
   font-size: 16px;
+  border-radius: 6px;
   border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-input:focus {
-  outline: none;
-  border-color: #42b983;
-  box-shadow: 0 0 5px #42b983;
+  resize: none;
+  margin-bottom: 1rem;
 }
 
 button {
+  width: 100%;
   padding: 0.75rem;
   font-size: 18px;
-  background-color: #42b983;
-  border: none;
-  border-radius: 5px;
+  background-color: #06c755;
   color: white;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
 button:disabled {
-  background-color: #a3d9b1;
+  background-color: #a0e0ba;
   cursor: not-allowed;
 }
 
-button:hover:not(:disabled) {
-  background-color: #369f6e;
-}
-
-.message {
-  margin-top: 1.5rem;
-  font-weight: 600;
+.confirm {
+  margin-top: 1rem;
+  text-align: center;
   color: #2c662d;
+  font-weight: bold;
 }
 </style>
